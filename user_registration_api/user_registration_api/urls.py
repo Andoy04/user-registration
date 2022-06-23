@@ -6,7 +6,7 @@ from rest_framework import routers
 
 
 router = routers.DefaultRouter()
-router.register(r'user', UserViewSet) #the route tha will be used to access your API on the browser
+router.register(r'user', UserViewSet, basename='user')
 
 
 urlpatterns = [
