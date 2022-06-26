@@ -1,4 +1,5 @@
 
+import email
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework.renderers import JSONRenderer
@@ -9,11 +10,14 @@ from django.contrib.auth.password_validation import validate_password
 from .models import User
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=True)#, validators=[validate_password])
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'first_name', 'last_name')
+        fields = ('email', 'password', 'first_name', 'last_name', 'is_active')
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'is_active': {'read_only': True},
+        }
 
     def create(self, validated_data):
         user = User.objects.create(
@@ -27,6 +31,3 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
-    
-    def get(self):
-        return User.objects.all()
