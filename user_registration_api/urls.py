@@ -1,13 +1,16 @@
+from posixpath import basename
 from django.contrib import admin
 from django.urls import path, include
-from user_registration.views import UserViewSet
+
 from rest_framework import routers
 
+from user_registration.views import UserView
+
 router = routers.DefaultRouter()
-router.register(r'user', UserViewSet, basename='user')
+router.register(f'list', UserView, basename='list')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls'))
+    path('user/', include('user_registration.urls')),
+    path('user/', include(router.urls))
 ]
